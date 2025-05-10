@@ -2,9 +2,11 @@ from pygame import *
 
 win = display.set_mode((1500,1000))
 
+font.init()
 ball_sc = image.load("ball.png")
 platform1_sc = image.load("platform 1.png")
 platform2_sc = image.load("platform 2.png")
+font1 = font.Font(None,100)
 
 class Sprite():
     def __init__(self,image_p,x,y):
@@ -30,6 +32,7 @@ class Ball(Sprite):
         self.speed_y = 5
 
     def move(self):
+        global lose,lose_text
         if self.rect.y <= 0:
             self.speed_y *= -1
         elif self.rect.y >= 870:
@@ -39,8 +42,17 @@ class Ball(Sprite):
             self.speed_x *= -1
         elif sprite.collide_rect(self,platform2):
             self.speed_x *= -1
+        if self.rect.x <= 0:
+            lose = 1
+            lose_text = font1.render(f"Игрок {lose} проиграл",True,(0,0,0))
+        if  self.rect.x >= 1370:
+            lose = 2
+            lose_text = font1.render(f"Игрок {lose} проиграл",True,(255,0,0))
+
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
+
+        
         
 
 ball = Ball(ball_sc,600,600)
@@ -48,6 +60,7 @@ platform1 = Platform(platform1_sc,100,500)
 platform2 = Platform(platform2_sc,1200,500)
 
 tick = time.Clock()
+lose = None
 mod = 0
 while mod == 0:
     for e in event.get():
@@ -64,6 +77,8 @@ while mod == 0:
     platform1.draw()
     platform2.draw()
 
+    if lose == 1 or lose == 2:
+        win.blit(lose_text,(300,500))
 
 
     tick.tick(60)
