@@ -11,6 +11,8 @@ font2 = font.Font(None,70)
 
 count = 0
 count_text = font2.render(f"Счёт: {count}",True,(29, 63, 87))
+touch2 = 0
+touch1 = 0
 
 class Sprite():
     def __init__(self,image_p,x,y):
@@ -36,20 +38,26 @@ class Ball(Sprite):
         self.speed_y = 5
 
     def move(self):
-        global lose,lose_text,restart_text,count,count_text
+        global lose,lose_text,restart_text,count,count_text,touch1,touch2
         if self.rect.y <= 0:
             self.speed_y *= -1
         elif self.rect.y >= 870:
             self.speed_y *= -1
         
         if sprite.collide_rect(self,platform1):
-            self.speed_x *= -1
-            count += 1
-            count_text = font2.render(f"Счёт: {count}",True,(29, 63, 87))
+            touch2 = 0
+            if touch1 == 0:
+                self.speed_x *= -1
+                count += 1
+                count_text = font2.render(f"Счёт: {count}",True,(29, 63, 87))
+                touch1 += 1
         elif sprite.collide_rect(self,platform2):
-            self.speed_x *= -1
-            count += 1
-            count_text = font2.render(f"Счёт: {count}",True,(29, 63, 87))
+            touch1 = 0
+            if touch2 == 0:
+                self.speed_x *= -1
+                count += 1
+                count_text = font2.render(f"Счёт: {count}",True,(29, 63, 87))
+                touch2 += 1
         if self.rect.x <= 0:
             lose = 1
             lose_text = font1.render(f"Игрок {lose} проиграл",True,(0,0,0))
