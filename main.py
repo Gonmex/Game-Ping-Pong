@@ -94,6 +94,8 @@ while mod == 0:
                     count = 0
                     count_text = font2.render(f"Счёт: {count}",True,(29, 63, 87))
                     lose = 0
+                    touch1 = 0
+                    touch2 = 0
 
     win.fill((100,100,100))
 
@@ -113,5 +115,5 @@ while mod == 0:
         win.blit(restart_text,(270,900))
 
 
-    tick.tick(60)
     display.update()
+    tick.tick(60)
